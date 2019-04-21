@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">hydratic</string>
+    <string name="history">History</string>
+    <string name="hydration">Hydration</string>
+    <string name="settings">Settings</string>
 </resources>

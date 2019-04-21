@@ -29,6 +29,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "androidx.appcompat:appcompat:$ANDROIDX_APPCOMPAT_VERSION"
     implementation "androidx.constraintlayout:constraintlayout:$ANDROIDX_CONSTRAINT_LAYOUT_VERSION"
+    implementation "com.google.android.material:material:$GOOGLE_ANDROID_MATERIAL_VERSION"
     implementation "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"
     implementation "com.github.PhilJay:MPAndroidChart:$MP_ANDROID_CHART_VERSION"
     implementation "com.airbnb.android:lottie:$LOTTIE_VERSION"

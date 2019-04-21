@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_history"
+        android:title="@string/history"
+        android:icon="@drawable/ic_chart_bar"/>
+
+    <item android:id="@+id/action_hydration"
+        android:title="@string/hydration"
+        android:icon="@drawable/ic_water_outline"/>
+
+    <item android:id="@+id/action_settings"
+        android:title="@string/settings"
+        android:icon="@drawable/ic_settings_outline"/>
+</menu>
