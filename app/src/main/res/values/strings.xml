@@ -1,5 +1,10 @@
 <resources>
-    <string name="app_name">hydratic</string>
+    <string name="app_name">Hydratic</string>
+    <string name="app_name_uppercase">HYDRATIC</string>
+    <string name="sign_in_sign_up">Sign In / Sign Up</string>
+    <string name="sign_in_details_part_1">To use the app, you must first sign in.</string>
+    <string name="sign_in_details_part_2">If you don\'t have an account already, it will prompt you to sign up.</string>
+    <string name="sign_out">Sign Out</string>
     <string name="history">History</string>
     <string name="hydration">Hydration</string>
     <string name="settings">Settings</string>

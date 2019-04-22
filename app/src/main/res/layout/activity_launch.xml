@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="18dp">
+
+        <ImageView
+            android:id="@+id/drop_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_marginTop="100dp"
+            android:src="@drawable/drop"/>
+
+        <TextView
+            android:id="@+id/hydratic_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="@string/app_name_uppercase"/>
+
+        <LinearLayout
+            android:id="@+id/sign_in_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:textSize="16sp"
+                android:textColor="@color/gray_600"
+                android:textStyle="normal"
+                android:text="@string/sign_in_details_part_1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="16sp"
+                android:textColor="@color/gray_600"
+                android:textStyle="normal"
+                android:text="@string/sign_in_details_part_2"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@drawable/sign_in_up_selector"
+        android:text="@string/sign_in_sign_up"/>
+
+</RelativeLayout>
