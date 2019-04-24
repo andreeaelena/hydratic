@@ -3,22 +3,32 @@ package com.hydratic.app.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.FirebaseUiException;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hydratic.app.R;
+import com.hydratic.app.model.User;
+import com.hydratic.app.storage.MemoryStore;
 
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.hydratic.app.util.Constants.IMPERIAL_VOLUME_UNIT;
 
 public class LaunchActivity extends AppCompatActivity {
 
@@ -27,20 +37,56 @@ public class LaunchActivity extends AppCompatActivity {
     @BindView(R.id.sign_in_description) View mSignInDescription;
     @BindView(R.id.sign_in_button) TextView mSignInButton;
 
+    private DatabaseReference mUsersRef;
+    private ValueEventListener mUserValueListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            if (dataSnapshot.exists()) {
+                User user = dataSnapshot.getValue(User.class);
+                // Save user in the internal memory storage and navigate to the MainActivity
+                MemoryStore.getInstance().setLoggedInUser(user);
+                gotToMainActivity();
+            }
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+            // TODO
+        }
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
         ButterKnife.bind(this);
 
+        mSignInDescription.setVisibility(View.GONE);
+        mSignInButton.setVisibility(View.GONE);
+
+        mUsersRef = FirebaseDatabase.getInstance().getReference().child("users");
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
+            // Setup the "Sign In / Sign Up" section of the screen
             mSignInDescription.setVisibility(View.VISIBLE);
             mSignInButton.setVisibility(View.VISIBLE);
             mSignInButton.setOnClickListener(new OnSignInButtonClickListener());
         } else {
-            gotToMainActivity();
+            // Get the user data from the database and store it locally
+            final DatabaseReference currentUserRef = mUsersRef.child(user.getUid());
+            currentUserRef.addValueEventListener(mUserValueListener);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            final DatabaseReference currentUserRef = mUsersRef.child(user.getUid());
+            currentUserRef.removeEventListener(mUserValueListener);
         }
     }
 
@@ -53,13 +99,12 @@ public class LaunchActivity extends AppCompatActivity {
                 // Successfully signed in
                 mSignInDescription.setVisibility(View.GONE);
                 mSignInButton.setVisibility(View.GONE);
-                gotToMainActivity();
+                onAuthSuccess();
             } else {
-                // TODO: handle sign-in error
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
+                // Auth error
+                IdpResponse response = IdpResponse.fromResultIntent(data);
+                FirebaseUiException error = response != null ? response.getError() : null;
+                onAuthFailed(error);
             }
         }
     }
@@ -79,6 +124,59 @@ public class LaunchActivity extends AppCompatActivity {
                         .setLogo(R.drawable.drop)
                         .build(),
                 SIGN_IN_REQUEST_CODE);
+    }
+
+    private void onAuthSuccess() {
+        // For newly Sign Up users, make sure to store their details in the database
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            addNewUserIfNeeded(user.getUid(), user.getDisplayName(), user.getEmail());
+        }
+    }
+
+    private void onAuthFailed(FirebaseUiException error) {
+        // TODO
+    }
+
+    private void addNewUserIfNeeded(String userId, String displayName, String email) {
+        // Save user in the internal memory storage
+        final User user = new User(displayName, email, 118, IMPERIAL_VOLUME_UNIT);
+        MemoryStore.getInstance().setLoggedInUser(user);
+
+        final DatabaseReference currentUserRef = mUsersRef.child(userId);
+
+        // Check if the user currently exists in the database
+        final ValueEventListener currentUserEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    // Remove the current ValueEventListener
+                    currentUserRef.removeEventListener(this);
+
+                    // Add the user to the database if there is not entry present for the current userId.
+                    mUsersRef.child(userId).setValue(user);
+
+                    // Since this is a new user, go through the Onboarding Activity first
+                    goToOnboardingActivity();
+                } else {
+                    // For existing users, go directly to the Main Activity
+                    gotToMainActivity();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // TODO
+            }
+        };
+
+        currentUserRef.addValueEventListener(currentUserEventListener);
+    }
+
+    private void goToOnboardingActivity() {
+        final Intent onboardingActivityIntent = new Intent(LaunchActivity.this, OnboardingActivity.class);
+        startActivity(onboardingActivityIntent);
+        finish();
     }
 
     private void gotToMainActivity() {

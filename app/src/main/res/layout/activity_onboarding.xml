@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:textSize="28sp"
+        android:textStyle="normal"
+        android:textColor="@color/black"
+        android:text="@string/setup"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_margin="18dp">
+
+        <EditText
+            android:id="@+id/weight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:padding="12dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:hint="@string/weight_lb"/>
+
+        <RadioGroup
+            android:id="@+id/measuring_units"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:checkedButton="@id/imperial">
+
+            <RadioButton
+                android:id="@+id/imperial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/imperial"/>
+
+            <RadioButton
+                android:id="@+id/metric"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/metric"/>
+
+        </RadioGroup>
+
+        <Spinner
+            android:id="@+id/gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:prompt="@string/gender_hint"
+            android:entries="@array/genders"/>
+
+        <Spinner
+            android:id="@+id/activity_level"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:prompt="@string/activity_level_hint"
+            android:entries="@array/activity_levels"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:padding="8dp"
+        android:background="@color/colorPrimaryDark">
+
+        <Button
+            android:id="@+id/button_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:textColor="@color/black"
+            android:text="@string/next"/>
+
+    </FrameLayout>
+
+</RelativeLayout>
