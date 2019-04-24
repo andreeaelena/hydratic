@@ -28,7 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.hydratic.app.util.Constants.IMPERIAL_VOLUME_UNIT;
+import static com.hydratic.app.util.Constants.IMPERIAL_UNITS;
 
 public class LaunchActivity extends AppCompatActivity {
 
@@ -38,11 +38,12 @@ public class LaunchActivity extends AppCompatActivity {
     @BindView(R.id.sign_in_button) TextView mSignInButton;
 
     private DatabaseReference mUsersRef;
+    private ValueEventListener mAddUserValueListener;
     private ValueEventListener mUserValueListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             if (dataSnapshot.exists()) {
-                User user = dataSnapshot.getValue(User.class);
+                final User user = dataSnapshot.getValue(User.class);
                 // Save user in the internal memory storage and navigate to the MainActivity
                 MemoryStore.getInstance().setLoggedInUser(user);
                 gotToMainActivity();
@@ -87,6 +88,9 @@ public class LaunchActivity extends AppCompatActivity {
         if (user != null) {
             final DatabaseReference currentUserRef = mUsersRef.child(user.getUid());
             currentUserRef.removeEventListener(mUserValueListener);
+            if (mAddUserValueListener != null) {
+                currentUserRef.removeEventListener(mAddUserValueListener);
+            }
         }
     }
 
@@ -139,19 +143,19 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
     private void addNewUserIfNeeded(String userId, String displayName, String email) {
-        // Save user in the internal memory storage
-        final User user = new User(displayName, email, 118, IMPERIAL_VOLUME_UNIT);
-        MemoryStore.getInstance().setLoggedInUser(user);
-
         final DatabaseReference currentUserRef = mUsersRef.child(userId);
 
         // Check if the user currently exists in the database
-        final ValueEventListener currentUserEventListener = new ValueEventListener() {
+        mAddUserValueListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
                     // Remove the current ValueEventListener
                     currentUserRef.removeEventListener(this);
+
+                    // Save user in the internal memory storage
+                    final User user = new User(displayName, email, 118, IMPERIAL_UNITS);
+                    MemoryStore.getInstance().setLoggedInUser(user);
 
                     // Add the user to the database if there is not entry present for the current userId.
                     mUsersRef.child(userId).setValue(user);
@@ -159,6 +163,10 @@ public class LaunchActivity extends AppCompatActivity {
                     // Since this is a new user, go through the Onboarding Activity first
                     goToOnboardingActivity();
                 } else {
+                    // Save user in the internal memory storage
+                    final User user = dataSnapshot.getValue(User.class);
+                    MemoryStore.getInstance().setLoggedInUser(user);
+
                     // For existing users, go directly to the Main Activity
                     gotToMainActivity();
                 }
@@ -170,7 +178,7 @@ public class LaunchActivity extends AppCompatActivity {
             }
         };
 
-        currentUserRef.addValueEventListener(currentUserEventListener);
+        currentUserRef.addValueEventListener(mAddUserValueListener);
     }
 
     private void goToOnboardingActivity() {

@@ -1,11 +1,15 @@
 package com.hydratic.app.fragment;
 
+import android.animation.LayoutTransition;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,8 +21,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hydratic.app.R;
 import com.hydratic.app.model.DrinkLog;
+import com.hydratic.app.model.Units;
 import com.hydratic.app.model.User;
 import com.hydratic.app.storage.MemoryStore;
+import com.hydratic.app.util.Utils;
 
 import java.util.Calendar;
 
@@ -28,14 +34,22 @@ import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.hydratic.app.util.Constants.IMPERIAL_UNITS;
+import static com.hydratic.app.util.Constants.IMPERIAL_VOLUME_UNIT;
+import static com.hydratic.app.util.Constants.METRIC_VOLUME_UNIT;
+
 public class HydrationFragment extends Fragment {
 
+    @BindView(R.id.daily_goal) TextView mDailyGoalTextView;
+    @BindView(R.id.progress_container) View mProgressContainer;
+    @BindView(R.id.progress_indicator) FrameLayout mProgressIndicator;
     @BindView(R.id.hydration_level) TextView mHydrationLevelTextView;
     @BindView(R.id.log_drink_button) Button mLogDrinkButton;
 
     private DatabaseReference mDrinkLogRef;
 
     private int mHydrationAmount;
+    private Units mUnits;
 
     private ValueEventListener mDrinkLogValueListener = new ValueEventListener() {
         @Override
@@ -86,6 +100,18 @@ public class HydrationFragment extends Fragment {
 
     private void setupUI() {
         updateUI();
+
+        final User user = MemoryStore.getInstance().getLoggedInUser();
+
+        mUnits = user.preferredUnits.equalsIgnoreCase(IMPERIAL_UNITS)
+                ? Units.IMPERIAL
+                : Units.METRIC;
+
+        mDailyGoalTextView.setText(String.format(getString(R.string.your_daily_goal),
+                getHydrationTarget(user), getVolumeUnits()));
+
+        mProgressIndicator.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+
         mLogDrinkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,10 +124,40 @@ public class HydrationFragment extends Fragment {
 
     private void updateUI() {
         mHydrationLevelTextView.setText(String.format("%.0f%%", getHydrationPercentage()));
+
+        final ViewTreeObserver vto = mProgressContainer.getViewTreeObserver();
+        if (vto.isAlive()) {
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    final User loggedInUser = MemoryStore.getInstance().getLoggedInUser();
+                    double hydrationFactor = (double) mHydrationAmount / loggedInUser.hydrationDailyTarget;
+                    double newProgress = mProgressContainer.getMeasuredHeight() * hydrationFactor;
+                    ViewGroup.LayoutParams params = mProgressIndicator.getLayoutParams();
+                    params.height = (int)newProgress;
+                    mProgressIndicator.setLayoutParams(params);
+
+                    // Remove the ViewTreeObserver
+                    mProgressContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            });
+        }
     }
 
     private double getHydrationPercentage() {
         final User loggedInUser = MemoryStore.getInstance().getLoggedInUser();
         return ((double) mHydrationAmount / loggedInUser.hydrationDailyTarget) * 100;
+    }
+
+    private double getHydrationTarget(User user) {
+        return mUnits == Units.METRIC
+                ? Utils.convertFlOzToMl(user.hydrationDailyTarget)
+                : user.hydrationDailyTarget;
+    }
+
+    private String getVolumeUnits() {
+        return mUnits == Units.IMPERIAL
+                ? IMPERIAL_VOLUME_UNIT
+                : METRIC_VOLUME_UNIT;
     }
 }

@@ -16,6 +16,7 @@
     <string name="setup">Setup</string>
     <string name="imperial">Imperial (lb)</string>
     <string name="metric">Metric (kg)</string>
+    <string name="your_daily_goal">Your daily goal: %.1f %s</string>
 
     <string-array name="genders">
         <item>Female</item>

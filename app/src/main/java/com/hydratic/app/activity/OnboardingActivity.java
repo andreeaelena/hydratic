@@ -13,14 +13,20 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hydratic.app.R;
 import com.hydratic.app.model.ActivityLevel;
 import com.hydratic.app.model.Gender;
 import com.hydratic.app.model.Units;
+import com.hydratic.app.model.User;
+import com.hydratic.app.storage.MemoryStore;
+import com.hydratic.app.util.Utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -114,13 +120,13 @@ public class OnboardingActivity extends AppCompatActivity {
                 if (!weightString.isEmpty()) {
                     double weight = Double.valueOf(weightString);
                     if (mUnits == Units.METRIC) {
-                        weight = convertKgsToLbs(weight);
+                        weight = Utils.convertKgsToLbs(weight);
                     }
                     dailyAmount = computeDailyAmount(weight, activityLevel);
                 }
 
                 // Round value to only 1 decimal place
-                dailyAmount = getDoubleWithDecimalPlaces(dailyAmount, 1);
+                dailyAmount = Utils.getDoubleWithDecimalPlaces(dailyAmount, 1);
 
                 // Save to DB
                 saveDailyAmountToDb(dailyAmount);
@@ -131,11 +137,16 @@ public class OnboardingActivity extends AppCompatActivity {
     private void saveDailyAmountToDb(double dailyAmount) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            FirebaseDatabase.getInstance().getReference()
+            final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
                     .child("users")
-                    .child(user.getUid())
-                    .child("hydrationDailyTarget")
-                    .setValue(dailyAmount).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    .child(user.getUid());
+
+            final User currentUser = MemoryStore.getInstance().getLoggedInUser();
+            currentUser.hydrationDailyTarget = dailyAmount;
+            currentUser.preferredUnits = mUnits.toString();
+            MemoryStore.getInstance().setLoggedInUser(currentUser);
+
+            userRef.setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     gotToMainActivity();
@@ -167,13 +178,5 @@ public class OnboardingActivity extends AppCompatActivity {
                 : (activityLevel == ActivityLevel.HIGH ? EXTRA_DAILY_ACTIVITY_WATER_AMOUNT_OZ * 2 : 0);
 
         return hydrationAmount + exerciseExtraAmount;
-    }
-
-    private static double getDoubleWithDecimalPlaces(double doubleValue, int decimalPlaces) {
-        return new BigDecimal(doubleValue).setScale(decimalPlaces, RoundingMode.HALF_UP).doubleValue();
-    }
-
-    private static double convertKgsToLbs(double amountInKgs) {
-        return amountInKgs / KG_TO_LB_CONVERSION_FACTOR;
     }
 }
