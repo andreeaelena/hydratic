@@ -8,7 +8,7 @@
     <string name="history">History</string>
     <string name="hydration">Hydration</string>
     <string name="settings">Settings</string>
-    <string name="information">Information</string>
+    <string name="tips">Tips</string>
     <string name="weight_lb">Weight (lb)</string>
     <string name="weight_kg">Weight (kg)</string>
     <string name="gender_hint">Gender…</string>
@@ -55,6 +55,16 @@
         <item>Low</item>
         <item>Medium</item>
         <item>High</item>
+    </string-array>
+
+    <string-array name="tips_array">
+        <item>By the time you feel thirsty, your body has lost more than 1 percent of its total water.</item>
+        <item>Drinking water can help you lose weight by increasing your metabolism.</item>
+        <item>When dehydrated, the skin can become more vulnerable to skin disorders and wrinkling.</item>
+        <item>Water boosts performance during exercise.</item>
+        <item>Water is the main food the body needs.</item>
+        <item>A 2% reduction of water levels in the body can lead to a 20% decrease in mental and physical performance.</item>
+        <item>Dehydration may induce contractions in pregnant women.</item>
     </string-array>
 
 </resources>

@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements UserSignedOutList
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_info:
+            case R.id.action_tips:
                 final Intent tipsActivityIntent = new Intent(MainActivity.this, TipsActivity.class);
                 startActivity(tipsActivityIntent);
                 return true;
