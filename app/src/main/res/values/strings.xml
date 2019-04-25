@@ -46,6 +46,7 @@
     <string name="eight_fl_oz_cup_ml">236 ml\ncup</string>
     <string name="no_history_yet">No history yet.\nStart hydrating!</string>
     <string name="tip_title">Tip #%d</string>
+    <string name="widget_error">Network error.\nRemove the widget and try again.</string>
 
     <string-array name="genders">
         <item>Female</item>
