@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hydratic.app.R;
+import com.hydratic.app.util.Utils;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
@@ -27,7 +28,11 @@ public class TipsPagerAdapter extends PagerAdapter {
         final LayoutInflater inflater = LayoutInflater.from(mContext);
         final ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.tips_page_item, container, false);
 
+        final TextView tipTitleTextView = layout.findViewById(R.id.tip_title);
         final TextView tipTextView = layout.findViewById(R.id.tip_text);
+
+        tipTitleTextView.setText(String.format(Utils.getLocale(mContext),
+                mContext.getString(R.string.tip_title), position + 1));
         tipTextView.setText(mTipsArray[position]);
 
         container.addView(layout);
