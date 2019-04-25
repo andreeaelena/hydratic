@@ -63,7 +63,7 @@ public class HydrationLevelWidget extends AppWidgetProvider {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                views.setViewVisibility(R.id.hydration_level, View.GONE);
+                views.setViewVisibility(R.id.hydration_level_container, View.GONE);
                 views.setViewVisibility(R.id.error_view, View.VISIBLE);
             }
         };
@@ -104,7 +104,7 @@ public class HydrationLevelWidget extends AppWidgetProvider {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                views.setViewVisibility(R.id.hydration_level, View.GONE);
+                views.setViewVisibility(R.id.hydration_level_container, View.GONE);
                 views.setViewVisibility(R.id.error_view, View.VISIBLE);
             }
         };
