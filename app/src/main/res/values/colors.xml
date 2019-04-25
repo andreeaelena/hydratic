@@ -10,5 +10,6 @@
     <color name="black">#000000</color>
 
     <color name="gray_200">#EEEEEE</color>
+    <color name="gray_400">#BDBDBD</color>
     <color name="gray_600">#757575</color>
 </resources>

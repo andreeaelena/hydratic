@@ -12,4 +12,10 @@ public class Constants {
     public static final int EXTRA_DAILY_ACTIVITY_WATER_AMOUNT_OZ = 12;
     public static final double KG_TO_LB_CONVERSION_FACTOR = 0.45359237;
     public static final double FL_OZ_TO_ML_CONVERSTION_FACTOR = 0.033814;
+
+    public class Extras {
+
+        public static final String EXTRA_HINT = "hint";
+        public static final String EXTRA_TEXT = "text";
+    }
 }

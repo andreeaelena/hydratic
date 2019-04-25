@@ -43,13 +43,13 @@
                 android:id="@+id/imperial"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/imperial"/>
+                android:text="@string/imperial_lb"/>
 
             <RadioButton
                 android:id="@+id/metric"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/metric"/>
+                android:text="@string/metric_kg"/>
 
         </RadioGroup>
 

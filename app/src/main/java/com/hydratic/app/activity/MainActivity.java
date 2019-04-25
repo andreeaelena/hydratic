@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements UserSignedOutList
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        mToolbar.setLogo(R.mipmap.ic_launcher);
         setSupportActionBar(mToolbar);
         setTitle(R.string.app_name);
 
@@ -63,13 +64,16 @@ public class MainActivity extends AppCompatActivity implements UserSignedOutList
             switch(id) {
                 case R.id.action_history:
                     mFragment = new HistoryFragment();
+                    setTitle(R.string.history);
                     break;
                 case R.id.action_hydration:
                     mFragment = new HydrationFragment();
+                    setTitle(R.string.hydration);
                     break;
                 case R.id.action_settings:
                     mFragment = new SettingsFragment();
                     ((SettingsFragment) mFragment).setOnUserSignedOutListener(MainActivity.this);
+                    setTitle(R.string.settings);
                     break;
             }
 

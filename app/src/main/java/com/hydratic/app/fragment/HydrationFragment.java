@@ -103,12 +103,11 @@ public class HydrationFragment extends Fragment {
 
         final User user = MemoryStore.getInstance().getLoggedInUser();
 
-        mUnits = user.preferredUnits.equalsIgnoreCase(IMPERIAL_UNITS)
-                ? Units.IMPERIAL
-                : Units.METRIC;
+        mUnits = Units.getUnitsFromUser(user);
 
         mDailyGoalTextView.setText(String.format(getString(R.string.your_daily_goal),
-                getHydrationTarget(user), getVolumeUnits()));
+                Utils.getHydrationTarget(user, mUnits),
+                Utils.getVolumeUnits(mUnits)));
 
         mProgressIndicator.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
 
@@ -147,17 +146,5 @@ public class HydrationFragment extends Fragment {
     private double getHydrationPercentage() {
         final User loggedInUser = MemoryStore.getInstance().getLoggedInUser();
         return ((double) mHydrationAmount / loggedInUser.hydrationDailyTarget) * 100;
-    }
-
-    private double getHydrationTarget(User user) {
-        return mUnits == Units.METRIC
-                ? Utils.convertFlOzToMl(user.hydrationDailyTarget)
-                : user.hydrationDailyTarget;
-    }
-
-    private String getVolumeUnits() {
-        return mUnits == Units.IMPERIAL
-                ? IMPERIAL_VOLUME_UNIT
-                : METRIC_VOLUME_UNIT;
     }
 }

@@ -10,6 +10,10 @@ public class User {
     public String email;
     public double hydrationDailyTarget;
     public String preferredUnits;
+    public boolean notifications;
+    public int notificationsStartTime;
+    public int notificationsEndTime;
+    public int notificationsRepeat;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -21,5 +25,9 @@ public class User {
         this.email = email;
         this.hydrationDailyTarget = hydrationDailyTarget;
         this.preferredUnits = preferredUnits;
+        this.notifications = false;
+        this.notificationsStartTime = 9; // Default: 9 AM
+        this.notificationsEndTime = 20; // Default: 8 PM
+        this.notificationsRepeat = 2; // Default: Every 2 hours
     }
 }
