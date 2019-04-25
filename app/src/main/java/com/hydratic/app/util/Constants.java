@@ -5,7 +5,13 @@ public class Constants {
     public static final String IMPERIAL_UNITS = "imperial";
     public static final String METRIC_UNITS = "metric";
     public static final String IMPERIAL_VOLUME_UNIT = "fl oz";
+    public static final String IMPERIAL_VOLUME_UNIT_SHORT = "oz";
     public static final String METRIC_VOLUME_UNIT = "ml";
+    public static final String GLASS = "glass";
+    public static final String CUP = "cup";
+    public static final String WATER = "water";
+    public static final String COFFEE = "coffee";
+    public static final String TEA = "tea";
     public static final double HYDRATION_LEVEL_DEFAULT_MALE = 125;
     public static final double HYDRATION_LEVEL_DEFAULT_FEMALE = 91;
     public static final double HYDRATION_LEVEL_FACTOR = 0.66;

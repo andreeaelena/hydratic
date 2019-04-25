@@ -13,6 +13,7 @@ import com.hydratic.app.R;
 import com.hydratic.app.model.DrinkLog;
 import com.hydratic.app.model.User;
 import com.hydratic.app.storage.MemoryStore;
+import com.hydratic.app.util.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,7 +28,7 @@ import static com.hydratic.app.util.Constants.METRIC_VOLUME_UNIT;
 
 public class LogHistoryAdapter extends FirebaseRecyclerAdapter<DrinkLog, RecyclerView.ViewHolder> {
 
-    private static final String DRINK_DESCRIPTION_FORMAT = "%1$s %2$s %3$s of %4$s";
+    private static final String DRINK_DESCRIPTION_FORMAT = "%1$.0f %2$s %3$s of %4$s";
 
     private SimpleDateFormat mSimpleDateFormat;
 
@@ -73,10 +74,17 @@ public class LogHistoryAdapter extends FirebaseRecyclerAdapter<DrinkLog, Recycle
 
     private String getFormattedDrinkDescription(DrinkLog drinkLog) {
         final User user = MemoryStore.getInstance().getLoggedInUser();
+
+        final double amount = user.preferredUnits.equalsIgnoreCase(IMPERIAL_UNITS)
+                ? drinkLog.amount
+                : Utils.convertFlOzToMl(drinkLog.amount);
+
         final String volumeUnits = user.preferredUnits.equalsIgnoreCase(IMPERIAL_UNITS)
-                ? IMPERIAL_VOLUME_UNIT : METRIC_VOLUME_UNIT;
+                ? IMPERIAL_VOLUME_UNIT
+                : METRIC_VOLUME_UNIT;
+
         return String.format(DRINK_DESCRIPTION_FORMAT,
-                drinkLog.amount, volumeUnits, drinkLog.container, drinkLog.type);
+                amount, volumeUnits, drinkLog.container, drinkLog.type);
     }
 
     /**

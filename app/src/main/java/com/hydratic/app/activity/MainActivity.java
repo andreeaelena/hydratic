@@ -1,6 +1,9 @@
 package com.hydratic.app.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -38,6 +41,25 @@ public class MainActivity extends AppCompatActivity implements UserSignedOutList
         setTitle(R.string.app_name);
 
         setupUI();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_info:
+                final Intent tipsActivityIntent = new Intent(MainActivity.this, TipsActivity.class);
+                startActivity(tipsActivityIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setupUI() {

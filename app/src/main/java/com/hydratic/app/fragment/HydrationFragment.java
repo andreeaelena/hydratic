@@ -1,17 +1,16 @@
 package com.hydratic.app.fragment;
 
 import android.animation.LayoutTransition;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,17 +33,13 @@ import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.hydratic.app.util.Constants.IMPERIAL_UNITS;
-import static com.hydratic.app.util.Constants.IMPERIAL_VOLUME_UNIT;
-import static com.hydratic.app.util.Constants.METRIC_VOLUME_UNIT;
-
 public class HydrationFragment extends Fragment {
 
     @BindView(R.id.daily_goal) TextView mDailyGoalTextView;
     @BindView(R.id.progress_container) View mProgressContainer;
     @BindView(R.id.progress_indicator) FrameLayout mProgressIndicator;
     @BindView(R.id.hydration_level) TextView mHydrationLevelTextView;
-    @BindView(R.id.log_drink_button) Button mLogDrinkButton;
+    @BindView(R.id.log_drink_button) FloatingActionButton mLogDrinkButton;
 
     private DatabaseReference mDrinkLogRef;
 
@@ -114,9 +109,8 @@ public class HydrationFragment extends Fragment {
         mLogDrinkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                long timestamp = Calendar.getInstance().getTimeInMillis();
-                final DrinkLog drinkLog = new DrinkLog(timestamp, 16, "oz", "cup", "coffee");
-                mDrinkLogRef.child(String.valueOf(timestamp)).setValue(drinkLog);
+                final AddDrinkDialogFragment addDrinkDialogFragment = new AddDrinkDialogFragment();
+                addDrinkDialogFragment.show(getFragmentManager(), "add_drink_dialog");
             }
         });
     }

@@ -44,6 +44,7 @@ import butterknife.ButterKnife;
 
 public class HistoryFragment extends Fragment {
 
+    @BindView(R.id.empty_view) View mEmptyView;
     @BindView(R.id.log_history_chart) BarChart mLogHistoryBarChart;
     @BindView(R.id.log_history) RecyclerView mLogHistoryRecyclerView;
 
@@ -58,6 +59,10 @@ public class HistoryFragment extends Fragment {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             if (dataSnapshot.exists()) {
+                mEmptyView.setVisibility(View.GONE);
+                mLogHistoryBarChart.setVisibility(View.VISIBLE);
+                mLogHistoryRecyclerView.setVisibility(View.VISIBLE);
+
                 mDrinkLogList = new ArrayList<>();
                 for(DataSnapshot drinkLogSnapshot: dataSnapshot.getChildren()) {
                     if (drinkLogSnapshot.exists()) {
@@ -75,6 +80,10 @@ public class HistoryFragment extends Fragment {
                 mLogHistoryBarChart.getData().notifyDataChanged();
                 mLogHistoryBarChart.notifyDataSetChanged();
                 mLogHistoryBarChart.invalidate();
+            } else {
+                mEmptyView.setVisibility(View.VISIBLE);
+                mLogHistoryBarChart.setVisibility(View.GONE);
+                mLogHistoryRecyclerView.setVisibility(View.GONE);
             }
         }
 

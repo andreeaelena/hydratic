@@ -8,6 +8,7 @@
     <string name="history">History</string>
     <string name="hydration">Hydration</string>
     <string name="settings">Settings</string>
+    <string name="information">Information</string>
     <string name="weight_lb">Weight (lb)</string>
     <string name="weight_kg">Weight (kg)</string>
     <string name="gender_hint">Gender…</string>
@@ -32,6 +33,18 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="every_x_hours">Every %d hours</string>
+    <string name="zero_percent">0%</string>
+    <string name="one_hundred_percent">100%</string>
+    <string name="water">Water</string>
+    <string name="coffee">Coffee</string>
+    <string name="tea">Tea</string>
+    <string name="sixteen_fl_oz_glass">16 fl oz\nglass</string>
+    <string name="sixteen_fl_oz_glass_ml">473 ml\nglass</string>
+    <string name="eight_fl_oz_glass">8 fl oz\nglass</string>
+    <string name="eight_fl_oz_glass_ml">236 ml\nglass</string>
+    <string name="eight_fl_oz_cup">8 fl oz\ncup</string>
+    <string name="eight_fl_oz_cup_ml">236 ml\ncup</string>
+    <string name="no_history_yet">No history yet.\nStart hydrating!</string>
 
     <string-array name="genders">
         <item>Female</item>

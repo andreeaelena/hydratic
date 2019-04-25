@@ -6,6 +6,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:tint="@color/colorPrimary"
+            android:src="@drawable/ic_chart_bar"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:text="@string/no_history_yet"/>
+
+    </LinearLayout>
+
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/log_history_chart"
         android:layout_width="match_parent"
