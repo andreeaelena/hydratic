@@ -154,7 +154,7 @@ public class LaunchActivity extends AppCompatActivity {
                     currentUserRef.removeEventListener(this);
 
                     // Save user in the internal memory storage
-                    final User user = new User(displayName, email, 118, IMPERIAL_UNITS);
+                    final User user = new User(userId, displayName, email, 118, IMPERIAL_UNITS);
                     MemoryStore.getInstance().setLoggedInUser(user);
 
                     // Add the user to the database if there is not entry present for the current userId.

@@ -36,6 +36,7 @@ dependencies {
 
     implementation "com.google.firebase:firebase-core:$FIREBASE_CORE_VERSION"
     implementation "com.google.firebase:firebase-database:$FIREBASE_DATABASE_VERSION"
+    implementation "com.firebaseui:firebase-ui-database:$FIREBASE_UI_DATABASE_VERSION"
     implementation "com.firebaseui:firebase-ui-auth:$FIREBASE_UI_AUTH_VERSION"
 
     annotationProcessor "com.jakewharton:butterknife-compiler:$BUTTERKNIFE_COMPILER_VERSION"

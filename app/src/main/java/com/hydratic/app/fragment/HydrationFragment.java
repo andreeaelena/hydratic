@@ -116,7 +116,7 @@ public class HydrationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 long timestamp = Calendar.getInstance().getTimeInMillis();
-                final DrinkLog drinkLog = new DrinkLog(16, "oz", "cup", "coffee");
+                final DrinkLog drinkLog = new DrinkLog(timestamp, 16, "oz", "cup", "coffee");
                 mDrinkLogRef.child(String.valueOf(timestamp)).setValue(drinkLog);
             }
         });
