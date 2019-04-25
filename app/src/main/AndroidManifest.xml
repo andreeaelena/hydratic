@@ -21,6 +21,8 @@
         <activity android:name=".activity.SelectDrinkActivity" />
         <activity android:name=".activity.TipsActivity" />
 
+        <service android:name=".service.NotificationsService"/>
+
         <receiver android:name=".widget.HydrationLevelWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

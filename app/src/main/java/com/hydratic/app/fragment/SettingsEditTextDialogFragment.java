@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-public class SettingsDialogFragment extends DialogFragment {
+public class SettingsEditTextDialogFragment extends DialogFragment {
 
     public interface OnSettingsDialogPositiveButtonClickListener {
         void onClick(DialogInterface dialogInterface, String newValue);
@@ -23,11 +23,11 @@ public class SettingsDialogFragment extends DialogFragment {
 
     private OnSettingsDialogPositiveButtonClickListener mOnPositiveButtonClickListener;
 
-    public static SettingsDialogFragment createInstance(Bundle args, OnSettingsDialogPositiveButtonClickListener onPositiveButtonClickListener) {
-        final SettingsDialogFragment settingsDialogFragment = new SettingsDialogFragment();
-        settingsDialogFragment.setArguments(args);
-        settingsDialogFragment.mOnPositiveButtonClickListener = onPositiveButtonClickListener;
-        return settingsDialogFragment;
+    public static SettingsEditTextDialogFragment createInstance(Bundle args, OnSettingsDialogPositiveButtonClickListener onPositiveButtonClickListener) {
+        final SettingsEditTextDialogFragment settingsEditTextDialogFragment = new SettingsEditTextDialogFragment();
+        settingsEditTextDialogFragment.setArguments(args);
+        settingsEditTextDialogFragment.mOnPositiveButtonClickListener = onPositiveButtonClickListener;
+        return settingsEditTextDialogFragment;
     }
 
     @NonNull

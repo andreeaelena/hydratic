@@ -3,13 +3,13 @@ package com.hydratic.app.fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -159,8 +159,8 @@ public class SettingsFragment extends Fragment {
             args.putString(Extras.EXTRA_HINT, getString(R.string.daily_goal));
             args.putString(Extras.EXTRA_TEXT, String.valueOf(dailyGoal));
 
-            final SettingsDialogFragment settingsDialogFragment =
-                    SettingsDialogFragment.createInstance(args, new SettingsDialogFragment.OnSettingsDialogPositiveButtonClickListener() {
+            final SettingsEditTextDialogFragment settingsEditTextDialogFragment =
+                    SettingsEditTextDialogFragment.createInstance(args, new SettingsEditTextDialogFragment.OnSettingsDialogPositiveButtonClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, String newValue) {
                             double newDailyGoal = Double.parseDouble(newValue);
@@ -177,7 +177,7 @@ public class SettingsFragment extends Fragment {
                             updateUI();
                         }
                     });
-            settingsDialogFragment.show(getFragmentManager(), "daily_target_dialog");
+            settingsEditTextDialogFragment.show(getFragmentManager(), "daily_target_dialog");
         }
     }
 
@@ -192,27 +192,101 @@ public class SettingsFragment extends Fragment {
             mDatabaseUserRef.child("notifications").setValue(mUser.notifications);
 
             updateUI();
+
+            // Start / Stop NotificationsService
+            final Context context = getActivity();
+            if (context != null) {
+                if (mUser.notifications) {
+                    Utils.startNotificationsService(context, mUser);
+                } else {
+                    Utils.stopNotificationsService(context);
+                }
+            }
         }
     }
 
     private class OnNotificationStartTimeItemClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+            final Bundle args = new Bundle();
+            args.putInt(Extras.EXTRA_SELECTED_ITEM, mUser.notificationsStartTime);
 
+            SettingsHourSpinnerDialogFragment settingsHourSpinnerDialogFragment =
+                    SettingsHourSpinnerDialogFragment.createInstance(args, new SettingsHourSpinnerDialogFragment.OnHourSpinnerDialogPositiveButtonClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int newValue) {
+                            mUser.notificationsStartTime = newValue;
+                            // Save to internal memory store
+                            MemoryStore.getInstance().setLoggedInUser(mUser);
+                            // Save to database
+                            mDatabaseUserRef.child("notificationsStartTime").setValue(mUser.notificationsStartTime);
+                            if (mUser.notifications) {
+                                // Restart notifications service
+                                Utils.restartNotificationsService(getActivity(), mUser);
+                            }
+                            updateUI();
+                        }
+                    });
+            settingsHourSpinnerDialogFragment.show(getFragmentManager(), "notifications_start_time_dialog");
         }
     }
 
     private class OnNotificationEndTimeItemClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+            final Bundle args = new Bundle();
+            args.putInt(Extras.EXTRA_SELECTED_ITEM, mUser.notificationsEndTime);
 
+            SettingsHourSpinnerDialogFragment settingsHourSpinnerDialogFragment =
+                    SettingsHourSpinnerDialogFragment.createInstance(args, new SettingsHourSpinnerDialogFragment.OnHourSpinnerDialogPositiveButtonClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int newValue) {
+                            mUser.notificationsEndTime = newValue;
+                            // Save to internal memory store
+                            MemoryStore.getInstance().setLoggedInUser(mUser);
+                            // Save to database
+                            mDatabaseUserRef.child("notificationsEndTime").setValue(mUser.notificationsEndTime);
+                            if (mUser.notifications) {
+                                // Restart notifications service
+                                Utils.restartNotificationsService(getActivity(), mUser);
+                            }
+                            updateUI();
+                        }
+                    });
+            settingsHourSpinnerDialogFragment.show(getFragmentManager(), "notifications_end_time_dialog");
         }
     }
 
     private class OnNotificationRepeatItemClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+            final Bundle args = new Bundle();
+            args.putString(Extras.EXTRA_HINT, getString(R.string.notification_frequency));
+            args.putString(Extras.EXTRA_TEXT, String.valueOf(mUser.notificationsRepeat));
 
+            final SettingsEditTextDialogFragment settingsEditTextDialogFragment =
+                    SettingsEditTextDialogFragment.createInstance(args, new SettingsEditTextDialogFragment.OnSettingsDialogPositiveButtonClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, String newValue) {
+                            try {
+                                mUser.notificationsRepeat = Integer.parseInt(newValue);
+                                // Save to internal memory store
+                                MemoryStore.getInstance().setLoggedInUser(mUser);
+                                // Save to database
+                                mDatabaseUserRef.child("notificationsRepeat").setValue(mUser.notificationsRepeat);
+                                if (mUser.notifications) {
+                                    // Restart notifications service
+                                    Utils.restartNotificationsService(getActivity(), mUser);
+                                }
+                                updateUI();
+                            } catch (NumberFormatException e) {
+                                Toast.makeText(getActivity(),
+                                        R.string.notification_repeat_error,
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+            settingsEditTextDialogFragment.show(getFragmentManager(), "notifications_repeat_dialog");
         }
     }
 

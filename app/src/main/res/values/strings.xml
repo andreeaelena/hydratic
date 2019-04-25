@@ -47,6 +47,8 @@
     <string name="no_history_yet">No history yet.\nStart hydrating!</string>
     <string name="tip_title">Tip #%d</string>
     <string name="widget_error">Network error.\nRemove the widget and try again.</string>
+    <string name="notification_frequency">Notification frequency</string>
+    <string name="notification_repeat_error">"Repeat frequency should be specified in hours"</string>
 
     <string-array name="genders">
         <item>Female</item>
@@ -67,6 +69,26 @@
         <item>Water is the main food the body needs.</item>
         <item>A 2% reduction of water levels in the body can lead to a 20% decrease in mental and physical performance.</item>
         <item>Dehydration may induce contractions in pregnant women.</item>
+    </string-array>
+
+    <string-array name="hours">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+
+    <string-array name="time_of_day">
+        <item>AM</item>
+        <item>PM</item>
     </string-array>
 
 </resources>

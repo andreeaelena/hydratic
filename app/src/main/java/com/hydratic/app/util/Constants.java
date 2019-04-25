@@ -23,5 +23,11 @@ public class Constants {
 
         public static final String EXTRA_HINT = "hint";
         public static final String EXTRA_TEXT = "text";
+        public static final String EXTRA_SELECTED_ITEM = "selected_item";
+        public static final String EXTRA_FORCE_STOP = "force_stop";
+        public static final String EXTRA_START_TIME = "start_time";
+        public static final String EXTRA_END_TIME = "end_time";
+        public static final String EXTRA_REPEAT = "repeat";
+        public static final String EXTRA_INITIAL_CALL = "initial_call";
     }
 }

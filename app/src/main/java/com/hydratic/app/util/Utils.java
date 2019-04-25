@@ -1,10 +1,12 @@
 package com.hydratic.app.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 
 import com.hydratic.app.model.Units;
 import com.hydratic.app.model.User;
+import com.hydratic.app.service.NotificationsService;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -59,5 +61,26 @@ public class Utils {
         } else {
             return String.format(locale, "%d AM", twentyForHours);
         }
+    }
+
+    public static void startNotificationsService(Context context, User user) {
+        final Intent startIntent = new Intent(context, NotificationsService.class);
+        startIntent.putExtra(Constants.Extras.EXTRA_INITIAL_CALL, true);
+        startIntent.putExtra(Constants.Extras.EXTRA_FORCE_STOP, false);
+        startIntent.putExtra(Constants.Extras.EXTRA_START_TIME, user.notificationsStartTime);
+        startIntent.putExtra(Constants.Extras.EXTRA_END_TIME, user.notificationsEndTime);
+        startIntent.putExtra(Constants.Extras.EXTRA_REPEAT, user.notificationsRepeat);
+        context.startService(startIntent);
+    }
+
+    public static void stopNotificationsService(Context context) {
+        final Intent stopIntent = new Intent(context, NotificationsService.class);
+        stopIntent.putExtra(Constants.Extras.EXTRA_FORCE_STOP, true);
+        context.startService(stopIntent);
+    }
+
+    public static void restartNotificationsService(Context context, User user) {
+        stopNotificationsService(context);
+        startNotificationsService(context, user);
     }
 }
