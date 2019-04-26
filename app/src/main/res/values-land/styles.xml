@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="HydrationLogFAB">
+        <item name="android:layout_toEndOf">@id/hydration_level</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginStart">30dp</item>
+    </style>
+
+    <style name="HistoryRootLayout">
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="HistoryBarChart">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_weight">.1</item>
+    </style>
+
+    <style name="HistoryRecyclerView">
+        <item name="android:layout_weight">.1</item>
+    </style>
+
+</resources>

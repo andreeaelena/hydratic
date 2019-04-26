@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    style="@style/HistoryRootLayout">
 
     <LinearLayout
         android:id="@+id/empty_view"
@@ -35,14 +35,14 @@
         android:id="@+id/log_history_chart"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"/>
+        style="@style/HistoryBarChart"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/log_history"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activity.MainActivity"
-        tools:listitem="@layout/log_history_item"/>
+        tools:listitem="@layout/log_history_item"
+        style="@style/HistoryRecyclerView"/>
 
 </LinearLayout>

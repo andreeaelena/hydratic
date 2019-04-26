@@ -4,10 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.FirebaseUiException;
-import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -18,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.hydratic.app.R;
 import com.hydratic.app.model.User;
 import com.hydratic.app.storage.MemoryStore;
+import com.hydratic.app.util.Utils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,15 +44,23 @@ public class LaunchActivity extends AppCompatActivity {
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             if (dataSnapshot.exists()) {
                 final User user = dataSnapshot.getValue(User.class);
-                // Save user in the internal memory storage and navigate to the MainActivity
-                MemoryStore.getInstance().setLoggedInUser(user);
-                gotToMainActivity();
+                if (user != null) {
+                    // Save user in the internal memory storage and navigate to the MainActivity
+                    MemoryStore.getInstance().setLoggedInUser(user);
+
+                    if (user.notifications) {
+                        // Start notifications service
+                        Utils.startNotificationsService(getApplicationContext(), user);
+                    }
+                    gotToMainActivity();
+                }
             }
         }
 
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
-            // TODO
+            Toast.makeText(getApplicationContext(), getString(R.string.server_error_message),
+                    Toast.LENGTH_LONG).show();
         }
     };
 
@@ -106,9 +114,7 @@ public class LaunchActivity extends AppCompatActivity {
                 onAuthSuccess();
             } else {
                 // Auth error
-                IdpResponse response = IdpResponse.fromResultIntent(data);
-                FirebaseUiException error = response != null ? response.getError() : null;
-                onAuthFailed(error);
+                onAuthFailed();
             }
         }
     }
@@ -138,8 +144,9 @@ public class LaunchActivity extends AppCompatActivity {
         }
     }
 
-    private void onAuthFailed(FirebaseUiException error) {
-        // TODO
+    private void onAuthFailed() {
+        Toast.makeText(getApplicationContext(), getString(R.string.auth_error_message),
+                Toast.LENGTH_LONG).show();
     }
 
     private void addNewUserIfNeeded(String userId, String displayName, String email) {
@@ -165,16 +172,24 @@ public class LaunchActivity extends AppCompatActivity {
                 } else {
                     // Save user in the internal memory storage
                     final User user = dataSnapshot.getValue(User.class);
-                    MemoryStore.getInstance().setLoggedInUser(user);
+                    if (user != null) {
+                        MemoryStore.getInstance().setLoggedInUser(user);
 
-                    // For existing users, go directly to the Main Activity
-                    gotToMainActivity();
+                        if (user.notifications) {
+                            // Start notifications service
+                            Utils.startNotificationsService(getApplicationContext(), user);
+                        }
+
+                        // For existing users, go directly to the Main Activity
+                        gotToMainActivity();
+                    }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // TODO
+                Toast.makeText(getApplicationContext(), getString(R.string.server_error_message),
+                        Toast.LENGTH_LONG).show();
             }
         };
 

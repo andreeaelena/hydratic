@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="daily_goal_view_padding_tart">12dp</dimen>
+    <dimen name="daily_goal_view_padding_end">12dp</dimen>
+    <dimen name="daily_goal_view_padding_top">20dp</dimen>
+    <dimen name="daily_goal_view_padding_bottom">20dp</dimen>
+    <dimen name="daily_goal_view_text_size">14sp</dimen>
+    <dimen name="hundred_percent_text_size">10sp</dimen>
+    <dimen name="completion_indicator_width">40dp</dimen>
+    <dimen name="completion_indicator_height">2dp</dimen>
+    <dimen name="halfway_indicator_width">20dp</dimen>
+    <dimen name="halfway_indicator_height">1dp</dimen>
+    <dimen name="hydration_level_text_size">68sp</dimen>
+
+    <dimen name="tips_item_margin_top_bottom">100dp</dimen>
+    <dimen name="tips_item_margin_start_end">50dp</dimen>
+    <dimen name="tips_item_padding">18dp</dimen>
+    <dimen name="tips_item_icon_size">40dp</dimen>
+    <dimen name="tips_item_image_margin_bottom">10dp</dimen>
+    <dimen name="tips_item_image_margin_end">0dp</dimen>
+
+</resources>

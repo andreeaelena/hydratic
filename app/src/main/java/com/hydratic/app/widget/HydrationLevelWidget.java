@@ -19,11 +19,14 @@ import com.google.firebase.database.ValueEventListener;
 import com.hydratic.app.R;
 import com.hydratic.app.model.DrinkLog;
 import com.hydratic.app.model.User;
+import com.hydratic.app.util.Constants.DatabaseFields;
 import com.hydratic.app.util.Utils;
 
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
+
+import static com.hydratic.app.util.Constants.PERCENTAGE_FORMAT;
 
 /**
  * Implementation of App Widget functionality.
@@ -37,12 +40,12 @@ public class HydrationLevelWidget extends AppWidgetProvider {
     private ValueEventListener mDrinkLogValueListener;
 
     public HydrationLevelWidget() {
-        final FirebaseUser frebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (frebaseUser != null) {
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
             mUserReference = FirebaseDatabase.getInstance().getReference()
-                    .child("users")
-                    .child(frebaseUser.getUid());
-            mDrinkLogReference = mUserReference.child("drinkLog");
+                    .child(DatabaseFields.DB_FIELD_USERS)
+                    .child(firebaseUser.getUid());
+            mDrinkLogReference = mUserReference.child(DatabaseFields.DB_FIELD_DRINK_LOG);
         }
     }
 
@@ -92,7 +95,7 @@ public class HydrationLevelWidget extends AppWidgetProvider {
                     // Compute hydration percentage
                     final double hydrationPercentage = ((double) hydrationAmount / mUser.hydrationDailyTarget) * 100;
                     final Locale locale = Utils.getLocale(context);
-                    final String formattedPercentage = String.format(locale, "%.0f%%", hydrationPercentage);
+                    final String formattedPercentage = String.format(locale, PERCENTAGE_FORMAT, hydrationPercentage);
 
                     // Set the hydration level
                     views.setTextViewText(R.id.hydration_level, formattedPercentage);

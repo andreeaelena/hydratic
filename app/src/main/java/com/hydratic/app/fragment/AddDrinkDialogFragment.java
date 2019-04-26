@@ -15,6 +15,7 @@ import com.hydratic.app.model.DrinkLog;
 import com.hydratic.app.model.Units;
 import com.hydratic.app.model.User;
 import com.hydratic.app.storage.MemoryStore;
+import com.hydratic.app.util.Constants.DatabaseFields;
 
 import java.util.Calendar;
 
@@ -39,9 +40,9 @@ public class AddDrinkDialogFragment extends DialogFragment {
         mPreferredUnits = user.preferredUnits.equalsIgnoreCase(Units.IMPERIAL.toString())
                 ? Units.IMPERIAL : Units.METRIC;
         mDrinkLogRef = FirebaseDatabase.getInstance().getReference()
-                .child("users")
+                .child(DatabaseFields.DB_FIELD_USERS)
                 .child(user.id)
-                .child("drinkLog");
+                .child(DatabaseFields.DB_FIELD_DRINK_LOG);
     }
 
     @NonNull

@@ -15,33 +15,38 @@
         android:background="@color/white">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:gravity="center">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tip_title"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:textSize="20sp"
-                android:textColor="@color/black"
-                android:textStyle="bold"/>
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginBottom="@dimen/tips_item_image_margin_bottom"
-                android:layout_marginEnd="@dimen/tips_item_image_margin_end"
-                android:src="@drawable/drop"/>
+                <ImageView
+                    android:layout_width="@dimen/tips_item_icon_size"
+                    android:layout_height="@dimen/tips_item_icon_size"
+                    android:layout_marginBottom="@dimen/tips_item_image_margin_bottom"
+                    android:layout_marginEnd="@dimen/tips_item_image_margin_end"
+                    android:src="@drawable/drop"/>
+
+                <TextView
+                    android:id="@+id/tip_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tip_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:gravity="start"
                 android:textColor="@color/black"
                 android:textSize="20sp"/>
 

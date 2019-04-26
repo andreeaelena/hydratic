@@ -24,6 +24,8 @@ import com.hydratic.app.model.NotificationState;
 import com.hydratic.app.model.Units;
 import com.hydratic.app.model.User;
 import com.hydratic.app.storage.MemoryStore;
+import com.hydratic.app.util.Constants.DatabaseFields;
+import com.hydratic.app.util.Constants.Dialogs;
 import com.hydratic.app.util.Constants.Extras;
 import com.hydratic.app.util.Utils;
 
@@ -70,7 +72,9 @@ public class SettingsFragment extends Fragment {
         mUser = MemoryStore.getInstance().getLoggedInUser();
         mPreferredUnits = Units.getUnitsFromUser(mUser);
 
-        mDatabaseUserRef = FirebaseDatabase.getInstance().getReference().child("users").child(mUser.id);
+        mDatabaseUserRef = FirebaseDatabase.getInstance().getReference()
+                .child(DatabaseFields.DB_FIELD_USERS)
+                .child(mUser.id);
 
         setupUI();
         return rootView;
@@ -93,7 +97,8 @@ public class SettingsFragment extends Fragment {
                 // Save to internal memory store
                 MemoryStore.getInstance().setLoggedInUser(mUser);
                 // Save to database
-                mDatabaseUserRef.child("preferredUnits").setValue(mPreferredUnits.toString());
+                mDatabaseUserRef.child(DatabaseFields.DB_FIELD_PREFERRED_UNITS)
+                        .setValue(mPreferredUnits.toString());
 
                 updateUI();
             }
@@ -172,12 +177,13 @@ public class SettingsFragment extends Fragment {
                             // Save to internal memory store
                             MemoryStore.getInstance().setLoggedInUser(mUser);
                             // Save to database
-                            mDatabaseUserRef.child("hydrationDailyTarget").setValue(newDailyGoal);
+                            mDatabaseUserRef.child(DatabaseFields.DB_FIELD_HYDRATION_DAILY_TARGET)
+                                    .setValue(newDailyGoal);
 
                             updateUI();
                         }
                     });
-            settingsEditTextDialogFragment.show(getFragmentManager(), "daily_target_dialog");
+            settingsEditTextDialogFragment.show(getFragmentManager(), Dialogs.DIALOG_DAILY_TARGET);
         }
     }
 
@@ -189,7 +195,8 @@ public class SettingsFragment extends Fragment {
             // Save to internal memory store
             MemoryStore.getInstance().setLoggedInUser(mUser);
             // Save to database
-            mDatabaseUserRef.child("notifications").setValue(mUser.notifications);
+            mDatabaseUserRef.child(DatabaseFields.DB_FIELD_NOTIFICATIONS)
+                    .setValue(mUser.notifications);
 
             updateUI();
 
@@ -219,7 +226,8 @@ public class SettingsFragment extends Fragment {
                             // Save to internal memory store
                             MemoryStore.getInstance().setLoggedInUser(mUser);
                             // Save to database
-                            mDatabaseUserRef.child("notificationsStartTime").setValue(mUser.notificationsStartTime);
+                            mDatabaseUserRef.child(DatabaseFields.DB_FIELD_NOTIFICATIONS_START_TIME)
+                                    .setValue(mUser.notificationsStartTime);
                             if (mUser.notifications) {
                                 // Restart notifications service
                                 Utils.restartNotificationsService(getActivity(), mUser);
@@ -227,7 +235,7 @@ public class SettingsFragment extends Fragment {
                             updateUI();
                         }
                     });
-            settingsHourSpinnerDialogFragment.show(getFragmentManager(), "notifications_start_time_dialog");
+            settingsHourSpinnerDialogFragment.show(getFragmentManager(), Dialogs.DIALOG_NOTIF_START_TIME);
         }
     }
 
@@ -245,7 +253,8 @@ public class SettingsFragment extends Fragment {
                             // Save to internal memory store
                             MemoryStore.getInstance().setLoggedInUser(mUser);
                             // Save to database
-                            mDatabaseUserRef.child("notificationsEndTime").setValue(mUser.notificationsEndTime);
+                            mDatabaseUserRef.child(DatabaseFields.DB_FIELD_NOTIFICATIONS_END_TIME)
+                                    .setValue(mUser.notificationsEndTime);
                             if (mUser.notifications) {
                                 // Restart notifications service
                                 Utils.restartNotificationsService(getActivity(), mUser);
@@ -253,7 +262,7 @@ public class SettingsFragment extends Fragment {
                             updateUI();
                         }
                     });
-            settingsHourSpinnerDialogFragment.show(getFragmentManager(), "notifications_end_time_dialog");
+            settingsHourSpinnerDialogFragment.show(getFragmentManager(), Dialogs.DIALOG_NOTIF_END_TIME);
         }
     }
 
@@ -273,7 +282,8 @@ public class SettingsFragment extends Fragment {
                                 // Save to internal memory store
                                 MemoryStore.getInstance().setLoggedInUser(mUser);
                                 // Save to database
-                                mDatabaseUserRef.child("notificationsRepeat").setValue(mUser.notificationsRepeat);
+                                mDatabaseUserRef.child(DatabaseFields.DB_FIELD_NOTIFICATIONS_REPEAT)
+                                        .setValue(mUser.notificationsRepeat);
                                 if (mUser.notifications) {
                                     // Restart notifications service
                                     Utils.restartNotificationsService(getActivity(), mUser);
@@ -286,7 +296,7 @@ public class SettingsFragment extends Fragment {
                             }
                         }
                     });
-            settingsEditTextDialogFragment.show(getFragmentManager(), "notifications_repeat_dialog");
+            settingsEditTextDialogFragment.show(getFragmentManager(), Dialogs.DIALOG_NOTIF_REPEAT);
         }
     }
 

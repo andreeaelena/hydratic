@@ -12,6 +12,7 @@ import com.hydratic.app.callback.UserSignedOutListener;
 import com.hydratic.app.fragment.HistoryFragment;
 import com.hydratic.app.fragment.HydrationFragment;
 import com.hydratic.app.fragment.SettingsFragment;
+import com.hydratic.app.util.Constants.Extras;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements UserSignedOutList
 
     private FragmentManager mFragmentManager;
     private Fragment mFragment;
+    private int mSelectedFragmentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,18 @@ public class MainActivity extends AppCompatActivity implements UserSignedOutList
         setSupportActionBar(mToolbar);
         setTitle(R.string.app_name);
 
+        mSelectedFragmentId = R.id.action_hydration;
+        if (savedInstanceState != null) {
+            mSelectedFragmentId = savedInstanceState.getInt(Extras.EXTRA_SELECTED_FRAGMENT_ID);
+        }
+
         setupUI();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(Extras.EXTRA_SELECTED_FRAGMENT_ID, mBottomNavigationView.getSelectedItemId());
     }
 
     @Override
@@ -66,11 +79,22 @@ public class MainActivity extends AppCompatActivity implements UserSignedOutList
         mFragmentManager = getSupportFragmentManager();
 
         // Set the default fragment
+        Fragment defaultFragment = new HydrationFragment();
+        switch (mSelectedFragmentId) {
+            case R.id.action_history:
+                defaultFragment = new HistoryFragment();
+                break;
+            case R.id.action_settings:
+                defaultFragment = new SettingsFragment();
+                ((SettingsFragment) defaultFragment).setOnUserSignedOutListener(MainActivity.this);
+                break;
+        }
+
         mFragmentManager.beginTransaction()
-                .replace(R.id.main_fragment_container, new HydrationFragment())
+                .replace(R.id.main_fragment_container, defaultFragment)
                 .commit();
 
-        mBottomNavigationView.setSelectedItemId(R.id.action_hydration);
+        mBottomNavigationView.setSelectedItemId(mSelectedFragmentId);
         mBottomNavigationView.setOnNavigationItemSelectedListener(new OnBottomNavigationItemSelectedListener());
     }
 

@@ -2,6 +2,10 @@ package com.hydratic.app.storage;
 
 import com.hydratic.app.model.User;
 
+/**
+ * Memory Store represented as a singleton.
+ * Stores objects that form the state of the app.
+ */
 public class MemoryStore {
 
     private static MemoryStore sInstance;

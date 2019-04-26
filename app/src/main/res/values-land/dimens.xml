@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="tips_item_margin_top_bottom">50dp</dimen>
+    <dimen name="tips_item_margin_start_end">50dp</dimen>
+    <dimen name="tips_item_image_margin_bottom">0dp</dimen>
+    <dimen name="tips_item_image_margin_end">10dp</dimen>
+
+</resources>

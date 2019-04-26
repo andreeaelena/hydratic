@@ -48,7 +48,12 @@
     <string name="tip_title">Tip #%d</string>
     <string name="widget_error">Network error.\nRemove the widget and try again.</string>
     <string name="notification_frequency">Notification frequency</string>
-    <string name="notification_repeat_error">"Repeat frequency should be specified in hours"</string>
+    <string name="notification_repeat_error">Repeat frequency should be specified in hours</string>
+    <string name="get_hydrated">Get hydrated!</string>
+    <string name="do_not_forget_to_hydrate">Don\'t forget to hydrate!. Open the app and log your progress.</string>
+    <string name="info">Info</string>
+    <string name="server_error_message">Server connection issue. Please try again.</string>
+    <string name="auth_error_message">Authentication issue. Please try again.</string>
 
     <string-array name="genders">
         <item>Female</item>

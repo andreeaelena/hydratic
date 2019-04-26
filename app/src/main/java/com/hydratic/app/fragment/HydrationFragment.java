@@ -23,15 +23,17 @@ import com.hydratic.app.model.DrinkLog;
 import com.hydratic.app.model.Units;
 import com.hydratic.app.model.User;
 import com.hydratic.app.storage.MemoryStore;
+import com.hydratic.app.util.Constants.DatabaseFields;
+import com.hydratic.app.util.Constants.Dialogs;
 import com.hydratic.app.util.Utils;
-
-import java.util.Calendar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.hydratic.app.util.Constants.PERCENTAGE_FORMAT;
 
 public class HydrationFragment extends Fragment {
 
@@ -44,7 +46,6 @@ public class HydrationFragment extends Fragment {
     private DatabaseReference mDrinkLogRef;
 
     private int mHydrationAmount;
-    private Units mUnits;
 
     private ValueEventListener mDrinkLogValueListener = new ValueEventListener() {
         @Override
@@ -69,7 +70,7 @@ public class HydrationFragment extends Fragment {
 
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
-            // TODO
+            // Fail silently
         }
     };
 
@@ -83,9 +84,9 @@ public class HydrationFragment extends Fragment {
 
         if(currentUser != null) {
             mDrinkLogRef = FirebaseDatabase.getInstance().getReference()
-                    .child("users")
+                    .child(DatabaseFields.DB_FIELD_USERS)
                     .child(currentUser.getUid())
-                    .child("drinkLog");
+                    .child(DatabaseFields.DB_FIELD_DRINK_LOG);
             mDrinkLogRef.addValueEventListener(mDrinkLogValueListener);
         }
 
@@ -97,12 +98,11 @@ public class HydrationFragment extends Fragment {
         updateUI();
 
         final User user = MemoryStore.getInstance().getLoggedInUser();
-
-        mUnits = Units.getUnitsFromUser(user);
+        final Units units = Units.getUnitsFromUser(user);
 
         mDailyGoalTextView.setText(String.format(getString(R.string.your_daily_goal),
-                Utils.getHydrationTarget(user, mUnits),
-                Utils.getVolumeUnits(mUnits)));
+                Utils.getHydrationTarget(user, units),
+                Utils.getVolumeUnits(units)));
 
         mProgressIndicator.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
 
@@ -110,13 +110,13 @@ public class HydrationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 final AddDrinkDialogFragment addDrinkDialogFragment = new AddDrinkDialogFragment();
-                addDrinkDialogFragment.show(getFragmentManager(), "add_drink_dialog");
+                addDrinkDialogFragment.show(getFragmentManager(), Dialogs.DIALOG_ADD_DRINK);
             }
         });
     }
 
     private void updateUI() {
-        mHydrationLevelTextView.setText(String.format("%.0f%%", getHydrationPercentage()));
+        mHydrationLevelTextView.setText(String.format(PERCENTAGE_FORMAT, getHydrationPercentage()));
 
         final ViewTreeObserver vto = mProgressContainer.getViewTreeObserver();
         if (vto.isAlive()) {

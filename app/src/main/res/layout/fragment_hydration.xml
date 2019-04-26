@@ -20,11 +20,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
-                android:textSize="14sp"
+                android:paddingStart="@dimen/daily_goal_view_padding_tart"
+                android:paddingEnd="@dimen/daily_goal_view_padding_end"
+                android:paddingTop="@dimen/daily_goal_view_padding_top"
+                android:paddingBottom="@dimen/daily_goal_view_padding_bottom"
+                android:textSize="@dimen/daily_goal_view_text_size"
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:text="@string/your_daily_goal"/>
@@ -34,15 +34,15 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/completion_indicator"
                 android:layout_marginStart="6dp"
-                android:textSize="10sp"
+                android:textSize="@dimen/hundred_percent_text_size"
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:text="@string/one_hundred_percent"/>
 
             <View
                 android:id="@+id/completion_indicator"
-                android:layout_width="40dp"
-                android:layout_height="2dp"
+                android:layout_width="@dimen/completion_indicator_width"
+                android:layout_height="@dimen/completion_indicator_height"
                 android:layout_below="@id/daily_goal"
                 android:background="@color/white"/>
 
@@ -63,8 +63,8 @@
 
             <View
                 android:id="@+id/halfway_indicator"
-                android:layout_width="20dp"
-                android:layout_height="1dp"
+                android:layout_width="@dimen/halfway_indicator_width"
+                android:layout_height="@dimen/halfway_indicator_height"
                 android:layout_centerVertical="true"
                 android:background="@color/white"/>
 
@@ -82,18 +82,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textSize="68sp"
+            android:textSize="@dimen/hydration_level_text_size"
             android:textStyle="normal"
             android:textColor="@color/white"
             android:text="@string/zero_percent"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            style="@style/HydrationLogFAB"
             android:id="@+id/log_drink_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="100dp"
             android:tint="@color/colorPrimary"
             android:backgroundTint="@color/white"
             android:src="@drawable/ic_add"/>

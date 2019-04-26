@@ -24,6 +24,7 @@ import com.hydratic.app.adapter.LogHistoryAdapter;
 import com.hydratic.app.model.DrinkLog;
 import com.hydratic.app.model.User;
 import com.hydratic.app.storage.MemoryStore;
+import com.hydratic.app.util.Constants.DatabaseFields;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,6 +44,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HistoryFragment extends Fragment {
+
+    private static final String SIMPLE_DATE_FORMAT = "MM/dd";
 
     @BindView(R.id.empty_view) View mEmptyView;
     @BindView(R.id.log_history_chart) BarChart mLogHistoryBarChart;
@@ -89,7 +92,7 @@ public class HistoryFragment extends Fragment {
 
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
-            // TODO
+            // Fail silently
         }
     };
 
@@ -101,7 +104,10 @@ public class HistoryFragment extends Fragment {
 
         final User user = MemoryStore.getInstance().getLoggedInUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDrinkLogRef = mDatabase.child("users").child(user.id).child("drinkLog");
+        mDrinkLogRef = mDatabase
+                .child(DatabaseFields.DB_FIELD_USERS)
+                .child(user.id)
+                .child(DatabaseFields.DB_FIELD_DRINK_LOG);
 
         final Locale locale;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -109,7 +115,7 @@ public class HistoryFragment extends Fragment {
         } else {
             locale = getResources().getConfiguration().locale;
         }
-        mSimpleDateFormat = new SimpleDateFormat("MM/dd", locale);
+        mSimpleDateFormat = new SimpleDateFormat(SIMPLE_DATE_FORMAT, locale);
 
         return rootView;
     }
@@ -181,7 +187,10 @@ public class HistoryFragment extends Fragment {
 
         // Create the query to retrieve the drink log for the current user from
         // the Firebase Realtime Database.
-        Query logHistoryQuery = mDatabase.child("users").child(user.id).child("drinkLog");
+        Query logHistoryQuery = mDatabase
+                .child(DatabaseFields.DB_FIELD_USERS)
+                .child(user.id)
+                .child(DatabaseFields.DB_FIELD_DRINK_LOG);
 
         final FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<DrinkLog>()
                 .setQuery(logHistoryQuery, DrinkLog.class)

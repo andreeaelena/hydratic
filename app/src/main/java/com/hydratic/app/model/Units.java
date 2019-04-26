@@ -2,6 +2,9 @@ package com.hydratic.app.model;
 
 import static com.hydratic.app.util.Constants.IMPERIAL_UNITS;
 
+/**
+ * Enum representing measurement units
+ */
 public enum Units {
     IMPERIAL,
     METRIC;

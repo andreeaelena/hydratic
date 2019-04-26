@@ -18,12 +18,14 @@ import java.util.Calendar;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import static com.hydratic.app.util.Constants.HYDRATION_NOTIFICATION;
+
 public class NotificationsService extends IntentService {
 
     private AlarmManager mAlarm;
 
     public NotificationsService() {
-        super("NotificationsService");
+        super(NotificationsService.class.getSimpleName());
     }
 
     @Override
@@ -84,18 +86,18 @@ public class NotificationsService extends IntentService {
                     getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
-                    getApplicationContext(), "hydration_notification");
+                    getApplicationContext(), HYDRATION_NOTIFICATION);
 
             notificationBuilder.setAutoCancel(true)
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setWhen(System.currentTimeMillis())
                     .setSmallIcon(R.mipmap.ic_launcher)
-                    .setTicker("Hydrate")
-                    .setContentTitle("Get hydrated!")
-                    .setContentText("Don't forget to hydrate!. Open the app and log your progress.")
+                    .setTicker(getString(R.string.app_name))
+                    .setContentTitle(getString(R.string.get_hydrated))
+                    .setContentText(getString(R.string.do_not_forget_to_hydrate))
                     .setDefaults(Notification.DEFAULT_LIGHTS| Notification.DEFAULT_SOUND)
                     .setContentIntent(contentIntent)
-                    .setContentInfo("Info");
+                    .setContentInfo(getString(R.string.info));
 
 
             final NotificationManager notificationManager = (NotificationManager) getApplication().getSystemService(Context.NOTIFICATION_SERVICE);

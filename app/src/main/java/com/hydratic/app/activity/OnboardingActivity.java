@@ -23,11 +23,6 @@ import com.hydratic.app.model.User;
 import com.hydratic.app.storage.MemoryStore;
 import com.hydratic.app.util.Utils;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.Map;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +33,6 @@ import static com.hydratic.app.util.Constants.EXTRA_DAILY_ACTIVITY_WATER_AMOUNT_
 import static com.hydratic.app.util.Constants.HYDRATION_LEVEL_DEFAULT_FEMALE;
 import static com.hydratic.app.util.Constants.HYDRATION_LEVEL_DEFAULT_MALE;
 import static com.hydratic.app.util.Constants.HYDRATION_LEVEL_FACTOR;
-import static com.hydratic.app.util.Constants.KG_TO_LB_CONVERSION_FACTOR;
 
 public class OnboardingActivity extends AppCompatActivity {
 

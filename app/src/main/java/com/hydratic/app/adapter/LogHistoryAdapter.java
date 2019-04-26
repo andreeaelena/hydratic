@@ -29,7 +29,9 @@ import static com.hydratic.app.util.Constants.METRIC_VOLUME_UNIT;
 public class LogHistoryAdapter extends FirebaseRecyclerAdapter<DrinkLog, RecyclerView.ViewHolder> {
 
     private static final String DRINK_DESCRIPTION_FORMAT = "%1$.0f %2$s %3$s of %4$s";
+    private static final String DATE_FORMAT = "EEE, d MMM yyyy - h:mm a";
 
+    private Context mContext;
     private SimpleDateFormat mSimpleDateFormat;
 
     /**
@@ -41,14 +43,16 @@ public class LogHistoryAdapter extends FirebaseRecyclerAdapter<DrinkLog, Recycle
     public LogHistoryAdapter(Context context, @NonNull FirebaseRecyclerOptions<DrinkLog> options) {
         super(options);
 
+        mContext = context;
+
         final Locale locale;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            locale = context.getResources().getConfiguration().getLocales().get(0);
+            locale = mContext.getResources().getConfiguration().getLocales().get(0);
         } else {
-            locale = context.getResources().getConfiguration().locale;
+            locale = mContext.getResources().getConfiguration().locale;
         }
 
-        mSimpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy - h:mm a", locale);
+        mSimpleDateFormat = new SimpleDateFormat(DATE_FORMAT, locale);
     }
 
     @NonNull
@@ -83,7 +87,8 @@ public class LogHistoryAdapter extends FirebaseRecyclerAdapter<DrinkLog, Recycle
                 ? IMPERIAL_VOLUME_UNIT
                 : METRIC_VOLUME_UNIT;
 
-        return String.format(DRINK_DESCRIPTION_FORMAT,
+        final Locale locale = Utils.getLocale(mContext);
+        return String.format(locale, DRINK_DESCRIPTION_FORMAT,
                 amount, volumeUnits, drinkLog.container, drinkLog.type);
     }
 
