@@ -10,9 +10,18 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        release {
+            keyAlias 'release_key'
+            keyPassword 'hydratic'
+            storeFile file('keystore/keystore.jks')
+            storePassword 'hydratic'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -32,7 +41,6 @@ dependencies {
     implementation "com.google.android.material:material:$GOOGLE_ANDROID_MATERIAL_VERSION"
     implementation "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"
     implementation "com.github.PhilJay:MPAndroidChart:$MP_ANDROID_CHART_VERSION"
-    implementation "com.airbnb.android:lottie:$LOTTIE_VERSION"
 
     implementation "com.google.firebase:firebase-core:$FIREBASE_CORE_VERSION"
     implementation "com.google.firebase:firebase-database:$FIREBASE_DATABASE_VERSION"
