@@ -1,5 +1,11 @@
 # hydratic
 
+### DESCRIPTION:
+
+Keeping hydrated is a very important task that we should be doing daily, but sometimes we need an extra motivation to stay on track. Hydratic helps you set a hydration level that you want to achieve daily and log every water intake throughout the day. You can also set reminders to make sure you don’t forget to drink water if you’re having a busy day.
+Hydratic also lets you see your progress and figure out what are the days that need more attention from your side.
+
+
 ### NOTE:
 
 The app uses **Firebase Auth** and **Firebase Realtime Database**. This means that it needs to be configured with a `google-services.json` config file.
